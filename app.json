@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Mobile Web App",
+    "slug": "mobile-web-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": ["web"],
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {},
+    "web": {
+      "bundler": "webpack"
+    },
+    "plugins": []
+  }
+}
