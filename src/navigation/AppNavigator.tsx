@@ -81,24 +81,28 @@ function MyNavigator() {
   );
 }
 
-// function AppTabs() {
-//   return (
-//     <Tab.Navigator screenOptions={{ headerShown: false }}>
-//       <Tab.Screen name="Board" component={BoardNavigator} options={{ title: '게시판' }} />
-//       <Tab.Screen name="QA" component={QANavigator} options={{ title: 'Q&A' }} />
-//       <Tab.Screen name="Search" component={SearchScreen} options={{ title: '검색' }} />
-//       <Tab.Screen name="Notifications" component={NotificationsScreen} options={{ title: '알림' }} />
-//       <Tab.Screen name="My" component={MyNavigator} options={{ title: '마이' }} />
-//     </Tab.Navigator>
-//   );
-// }
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Import createBottomTabNavigator
+
+const Tab = createBottomTabNavigator<RootTabParamList>(); // Define Tab navigator
+
+function AppTabs() {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Board" component={BoardNavigator} options={{ title: '게시판' }} />
+      <Tab.Screen name="QA" component={QANavigator} options={{ title: 'Q&A' }} />
+      <Tab.Screen name="Search" component={SearchScreen} options={{ title: '검색' }} />
+      <Tab.Screen name="Notifications" component={NotificationsScreen} options={{ title: '알림' }} />
+      <Tab.Screen name="My" component={MyNavigator} options={{ title: '마이' }} />
+    </Tab.Navigator>
+  );
+}
 
 export default function AppNavigator() {
   const { token, isLoading } = useAuth();
   if (isLoading) return <Text style={{ padding: 16 }}>로딩 중...</Text>;
   return (
     <NavigationContainer>
-      {token ? <AuthNavigator /> : <AuthNavigator />}
+      {token ? <AppTabs /> : <AuthNavigator />} {/* token이 있으면 AppTabs, 없으면 AuthNavigator */}
     </NavigationContainer>
   );
 }
