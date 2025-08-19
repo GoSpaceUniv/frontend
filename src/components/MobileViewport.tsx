@@ -20,7 +20,7 @@ const MobileViewport: React.FC<Props> = ({ children, width = 390, backgroundColo
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    minHeight: '100vh',
+    minHeight: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
