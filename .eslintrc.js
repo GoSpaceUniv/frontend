@@ -1,11 +1,6 @@
 module.exports = {
   root: true,
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:react-native/all',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended', 'plugin:react-native/all', 'plugin:storybook/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-native'],
   parserOptions: {
