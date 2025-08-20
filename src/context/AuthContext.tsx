@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { StorageManager } from '../utils/storage';
 import type { UserProfile } from '../types';
+import { apiFetch } from '../api/client';
 
 interface AuthState {
   token: string | null;
@@ -9,7 +10,7 @@ interface AuthState {
 }
 
 interface SignInPayload {
-  emailOrPhone: string;
+  email: string;
   password: string;
 }
 
@@ -42,36 +43,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [state, setState] = useState<AuthState>({ token: null, user: null, isLoading: true });
 
   useEffect(() => {
-    // 개발 목적으로 로그인 상태를 강제로 설정
-    const demoToken = 'demo-jwt-token';
-    const demoUser: UserProfile = {
-      id: 'u_demo',
-      email: 'demo@example.com',
-      phone: undefined,
-      displayName: '데모 사용자',
-      role: 'student',
-      graduationYear: new Date().getFullYear() + 1,
-      createdAt: new Date().toISOString(),
+    // 앱 시작 시 저장된 인증 정보 로드
+    const loadAuthData = async () => {
+      try {
+        const storedToken = await StorageManager.getItem<string>('authToken');
+        const storedUser = await StorageManager.getItem<UserProfile>('authUser');
+        if (storedToken && storedUser) {
+          setState({ token: storedToken, user: storedUser, isLoading: false });
+        } else {
+          setState(prev => ({ ...prev, isLoading: false }));
+        }
+      } catch (error) {
+        console.error('Failed to load auth data from storage', error);
+        // JSON.parse 오류 발생 시 해당 키를 제거하여 다음 로드 시도 시 문제 방지
+        if (error instanceof SyntaxError) {
+          await StorageManager.removeItem('authToken');
+          await StorageManager.removeItem('authUser');
+          console.warn('Corrupted auth data removed from storage.');
+        }
+        setState(prev => ({ ...prev, isLoading: false }));
+      }
     };
-    setState({ token: demoToken, user: demoUser, isLoading: false });
+    loadAuthData();
   }, []);
 
-  const signIn = useCallback(async ({ emailOrPhone, password }: SignInPayload) => {
-    // TODO: 백엔드 연동 - 이메일/휴대폰과 비밀번호로 로그인 요청, 응답으로 JWT 토큰 수신
-    // 데모: 임시 토큰과 유저 저장
-    const demoToken = 'demo-jwt-token';
-    const demoUser: UserProfile = {
-      id: 'u_demo',
-      email: emailOrPhone.includes('@') ? emailOrPhone : undefined,
-      phone: emailOrPhone.includes('@') ? undefined : emailOrPhone,
-      displayName: '사용자',
-      role: 'student',
-      graduationYear: new Date().getFullYear() + 1,
-      createdAt: new Date().toISOString(),
-    };
-    await StorageManager.setItem('authToken', demoToken);
-    await StorageManager.setItem('authUser', demoUser);
-    setState({ token: demoToken, user: demoUser, isLoading: false });
+  const signIn = useCallback(async ({ email, password }: SignInPayload) => {
+    try {
+      const response = await apiFetch('/api/users/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+
+      const { id, email: userEmail, nickname, role } = response; // 응답에서 userId 및 사용자 정보 추출 (email은 userEmail로 변경)
+
+      if (!id || !email || !nickname || !role) {
+        throw new Error('API 응답에 필수 사용자 정보가 없습니다.');
+      }
+
+      const userProfile: UserProfile = {
+        id: String(id), // id가 숫자일 수 있으므로 String으로 변환
+        email: userEmail,
+        displayName: nickname,
+        role: role,
+        // 기타 필드는 백엔드 응답에 따라 추가
+        createdAt: new Date().toISOString(), // 임시 값
+      };
+
+      // userId를 authToken으로 저장 (실제로는 토큰이 아님)
+      await StorageManager.setItem('authToken', String(id));
+      await StorageManager.setItem('authUser', userProfile);
+      setState({ token: String(id), user: userProfile, isLoading: false });
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   }, []);
 
   const signUp = useCallback(async ({ emailOrPhone, password, displayName, graduationYear, role }: SignUpPayload) => {

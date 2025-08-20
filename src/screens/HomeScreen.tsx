@@ -34,7 +34,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             {/* Notification Icon */}
             <Text style={styles.iconText}>🔔</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('SignIn')}>
             {/* User Profile Icon */}
             <Text style={styles.iconText}>😊</Text>
           </TouchableOpacity>

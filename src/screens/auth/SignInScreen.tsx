@@ -1,34 +1,37 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Switch } from 'react-native';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { useAuth } from '../../hooks/useAuth';
 
-type NavigationLike = { navigate?: (screen: string) => void; push?: (screen: string) => void; goBack?: () => void };
-
-interface Props {
-  navigation?: NavigationLike;
-}
-
-const SignInScreen: React.FC<Props> = ({ navigation }) => {
+const SignInScreen: React.FC = () => {
   const { signIn } = useAuth();
-  const [userId, setUserId] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const goSignUp = () => {
-    window.location.href = '/signup'; // 직접 URL로 이동
+    navigate('/signup');
   };
 
   const onSubmit = async () => {
+    console.log('onSubmit 함수 호출됨');
     setLoading(true);
     try {
-      await signIn({ emailOrPhone: userId, password });
+      console.log('signIn 함수 호출 전');
+      await signIn({ email, password });
+      console.log('signIn 함수 호출 후');
+      // 로그인 성공 후 홈페이지로 이동
+      navigate('/board');
     } catch (e) {
+      console.error('로그인 실패:', e);
       Alert.alert('로그인 실패', '아이디 또는 비밀번호를 확인하세요');
     } finally {
       setLoading(false);
+      console.log('onSubmit 함수 종료');
     }
   };
 
@@ -45,11 +48,11 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.panel}>
         <View style={styles.formArea}>
           <Input
-            placeholder="아이디"
-            value={userId}
-            onChangeText={setUserId}
+            placeholder="이메일"
+            value={email}
+            onChangeText={setEmail}
             autoCapitalize="none"
-            keyboardType="default"
+            keyboardType="email-address"
             containerStyle={styles.inputContainer}
             inputStyle={styles.inputField}
           />

@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown'; // Import the new Dropdown component
 import { apiFetch } from '../../api/client';
 
-type NavigationLike = { navigate?: (screen: string, params?: any) => void };
-interface Props { navigation?: NavigationLike }
-
-const SignUpScreen: React.FC<Props> = ({ navigation }) => {
+const SignUpScreen: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
@@ -115,7 +114,7 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
         body: JSON.stringify({ email, password, nickname, graduationYear: parseInt(graduationYear, 10), schoolName }),
       });
       // 회원가입 성공 시 로그인 페이지로 리다이렉트
-      navigation?.navigate?.('SignIn');
+      navigate('/signin');
     } catch (error) {
       console.error('회원가입 실패:', error);
       // TODO: 사용자에게 오류 메시지를 표시하는 로직 추가 (예: alert)

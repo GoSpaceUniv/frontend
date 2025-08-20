@@ -30,9 +30,9 @@ export default function App() {
       <BrowserRouter>
         <MobileViewport>
           <Routes>
-            <Route path="/" element={<SignInScreen navigation={undefined as any} />} />
-            <Route path="/signin" element={<SignInScreen navigation={undefined as any} />} />
-            <Route path="/signup" element={<SignUpScreen navigation={undefined as any} />} />
+            <Route path="/" element={<SignInScreen />} />
+            <Route path="/signin" element={<SignInScreen />} />
+            <Route path="/signup" element={<SignUpScreen />} />
             <Route path="/graduation" element={<GraduationYearScreen navigation={undefined as any} route={{} as any} />} />
 
             <Route path="/board" element={<BoardHomeScreen />} />
