@@ -107,26 +107,20 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const submit = async () => {
-    if (Platform.OS === 'web') {
-      const form = new FormData();
-      form.append('email', email);
-      form.append('password', password);
-      form.append('nickname', nickname);
-      form.append('graduationYear', graduationYear);
-      form.append('role', 'USER');
-      form.append('schoolName', schoolName);
-      const file = fileInputRef.current?.files?.[0];
-      if (file) form.append('studentCard', file);
-
-      await apiFetch('/auth/signup', { method: 'POST', body: form });
-    } else {
-      // Native 환경의 경우, 별도 파일 피커 라이브러리 연동 필요
-      await apiFetch('/auth/signup', {
+    try {
+      // 웹 환경이든 네이티브 환경이든 동일하게 JSON 형식으로 데이터를 전송합니다.
+      // 학생증 이미지 업로드는 현재 요청된 정보에 포함되지 않으므로 제외합니다.
+      await apiFetch('/api/users/auth/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password, nickname, graduationYear, role: 'USER', schoolName }),
+        body: JSON.stringify({ email, password, nickname, graduationYear: parseInt(graduationYear, 10), schoolName }),
       });
+      // 회원가입 성공 시 로그인 페이지로 리다이렉트
+      navigation?.navigate?.('SignIn');
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      // TODO: 사용자에게 오류 메시지를 표시하는 로직 추가 (예: alert)
+      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
-    navigation?.navigate?.('SignIn');
   };
 
   return (
@@ -194,38 +188,108 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 20, backgroundColor: '#f5f7fb' },
-  bgTop: { position: 'absolute', top: -120, right: -60, width: 260, height: 260, borderRadius: 130, backgroundColor: '#e0e7ff' },
-  bgBottom: { position: 'absolute', bottom: -140, left: -80, width: 300, height: 300, borderRadius: 150, backgroundColor: '#fee2e2' },
-  header: { alignItems: 'center', marginTop: 36, marginBottom: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#1f2937' },
-  subtitle: { marginTop: 6, color: '#6b7280', fontSize: 14 },
+  container: {
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: '#f0f4f8', // Light gray background
+  },
+  bgTop: {
+    position: 'absolute',
+    top: -100,
+    right: -50,
+    width: 240,
+    height: 240,
+    borderRadius: 120,
+    backgroundColor: '#a7d9ff', // Lighter blue
+    opacity: 0.6,
+  },
+  bgBottom: {
+    position: 'absolute',
+    bottom: -120,
+    left: -70,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: '#ffb3b3', // Lighter red
+    opacity: 0.6,
+  },
+  header: {
+    alignItems: 'center',
+    marginTop: 40,
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#2c3e50', // Darker text for contrast
+    letterSpacing: 0.5,
+  },
+  subtitle: {
+    marginTop: 8,
+    color: '#7f8c8d', // Muted gray
+    fontSize: 15,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
   panel: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
+    borderRadius: 20, // More rounded corners
     borderWidth: 1,
     borderColor: '#eef2f7',
-    // overflow: 'hidden', // Remove this to allow dropdowns to expand
-    maxWidth: 420,
+    maxWidth: 450, // Slightly wider panel
     width: '100%',
     alignSelf: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 }, // Deeper shadow
+    shadowOpacity: 0.12,
+    shadowRadius: 25,
+    elevation: 8,
+  },
+  formArea: {
+    padding: 24, // More padding inside the form
+  },
+  inputContainer: {
+    marginBottom: 18, // Increased spacing between inputs
+  },
+  inputField: {
+    backgroundColor: '#fcfcfc', // Slightly off-white for input fields
+    borderColor: '#dcdfe6', // Softer border color
+    borderWidth: 1,
+    borderRadius: 12, // More rounded input fields
+    paddingVertical: 14, // More vertical padding
+    paddingHorizontal: 18, // More horizontal padding
+  },
+  uploadRow: {
+    marginTop: 10,
+    marginBottom: 16,
+  },
+  submitBtn: {
+    marginTop: 20, // More space above the button
+    height: 52, // Taller button
+    borderRadius: 14, // More rounded button
+    backgroundColor: '#3498db', // A vibrant blue
+    shadowColor: '#3498db',
     shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 6,
   },
-  formArea: { padding: 16 },
-  inputContainer: { marginBottom: 14 },
-  inputField: { backgroundColor: '#fff', borderColor: '#e5e7eb', borderWidth: 1, borderRadius: 10 },
-  uploadRow: { marginTop: 4, marginBottom: 10 },
-  submitBtn: { marginTop: 8, height: 48, borderRadius: 12, backgroundColor: '#10b981' },
   schoolBlock: {
-    marginTop: 8,
-    zIndex: 10, // Add a zIndex to ensure it creates a stacking context above other elements
+    marginTop: 18, // Increased spacing for school block
+    zIndex: 10,
   },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 },
-  muted: { color: '#6b7280' },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#34495e',
+    marginBottom: 10,
+  },
+  muted: {
+    color: '#95a5a6', // Muted gray for loading/error text
+    fontSize: 13,
+    textAlign: 'center',
+    marginTop: 5,
+  },
 });
 
 export default SignUpScreen;

@@ -42,13 +42,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [state, setState] = useState<AuthState>({ token: null, user: null, isLoading: true });
 
   useEffect(() => {
-    (async () => {
-      const [token, user] = await Promise.all([
-        StorageManager.getItem<string>('authToken'),
-        StorageManager.getItem<UserProfile>('authUser'),
-      ]);
-      setState({ token: token ?? null, user: user ?? null, isLoading: false });
-    })();
+    // 개발 목적으로 로그인 상태를 강제로 설정
+    const demoToken = 'demo-jwt-token';
+    const demoUser: UserProfile = {
+      id: 'u_demo',
+      email: 'demo@example.com',
+      phone: undefined,
+      displayName: '데모 사용자',
+      role: 'student',
+      graduationYear: new Date().getFullYear() + 1,
+      createdAt: new Date().toISOString(),
+    };
+    setState({ token: demoToken, user: demoUser, isLoading: false });
   }, []);
 
   const signIn = useCallback(async ({ emailOrPhone, password }: SignInPayload) => {

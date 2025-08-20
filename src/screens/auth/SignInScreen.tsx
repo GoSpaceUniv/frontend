@@ -4,7 +4,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { useAuth } from '../../hooks/useAuth';
 
-type NavigationLike = { navigate?: (screen: string) => void; goBack?: () => void };
+type NavigationLike = { navigate?: (screen: string) => void; push?: (screen: string) => void; goBack?: () => void };
 
 interface Props {
   navigation?: NavigationLike;
@@ -18,11 +18,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const goSignUp = () => {
-    if (navigation?.navigate) {
-      navigation.navigate('SignUp');
-    } else if (typeof window !== 'undefined') {
-      window.location.href = '/signup';
-    }
+    window.location.href = '/signup'; // 직접 URL로 이동
   };
 
   const onSubmit = async () => {
@@ -104,46 +100,132 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 20, backgroundColor: '#f5f7fb' },
-  bgTop: { position: 'absolute', top: -120, right: -60, width: 260, height: 260, borderRadius: 130, backgroundColor: '#e0e7ff' },
-  bgBottom: { position: 'absolute', bottom: -140, left: -80, width: 300, height: 300, borderRadius: 150, backgroundColor: '#fee2e2' },
-  header: { alignItems: 'center', marginTop: 36, marginBottom: 16 },
-  logo: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#6366f1', marginBottom: 10 },
-  brand: { fontSize: 24, fontWeight: '800', color: '#1f2937' },
-  subtitle: { marginTop: 6, color: '#6b7280', fontSize: 14 },
+  container: {
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: '#f0f4f8', // Light gray background
+  },
+  bgTop: {
+    position: 'absolute',
+    top: -100,
+    right: -50,
+    width: 240,
+    height: 240,
+    borderRadius: 120,
+    backgroundColor: '#a7d9ff', // Lighter blue
+    opacity: 0.6,
+  },
+  bgBottom: {
+    position: 'absolute',
+    bottom: -120,
+    left: -70,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: '#ffb3b3', // Lighter red
+    opacity: 0.6,
+  },
+  header: {
+    alignItems: 'center',
+    marginTop: 40,
+    marginBottom: 24,
+  },
+  logo: {
+    width: 50, // Slightly larger logo
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#3498db', // Blue logo
+    marginBottom: 12,
+    shadowColor: '#3498db',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  brand: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#2c3e50', // Darker text for contrast
+    letterSpacing: 0.5,
+  },
+  subtitle: {
+    marginTop: 8,
+    color: '#7f8c8d', // Muted gray
+    fontSize: 15,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
 
   panel: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
+    borderRadius: 20, // More rounded corners
     borderWidth: 1,
     borderColor: '#eef2f7',
     overflow: 'hidden',
-    maxWidth: 420,
+    maxWidth: 450, // Slightly wider panel
     width: '100%',
     alignSelf: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    shadowOffset: { width: 0, height: 10 }, // Deeper shadow
+    shadowOpacity: 0.12,
+    shadowRadius: 25,
+    elevation: 8,
   },
 
-  formArea: { padding: 16 },
-  inputContainer: { marginBottom: 14 },
+  formArea: {
+    padding: 24, // More padding inside the form
+  },
+  inputContainer: {
+    marginBottom: 18, // Increased spacing between inputs
+  },
   inputField: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e5e7eb',
+    backgroundColor: '#fcfcfc', // Slightly off-white for input fields
+    borderColor: '#dcdfe6', // Softer border color
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12, // More rounded input fields
+    paddingVertical: 14, // More vertical padding
+    paddingHorizontal: 18, // More horizontal padding
   },
 
-  toggleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 6, marginBottom: 14 },
-  toggleLabel: { color: '#374151' },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  toggleLabel: {
+    color: '#34495e', // Darker label color
+    fontSize: 15,
+  },
 
-  primaryBtn: { marginTop: 8, height: 52, borderRadius: 12, backgroundColor: '#3b82f6' },
-  linkRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 14 },
-  link: { color: '#64748b', fontWeight: '600' },
-  separator: { marginHorizontal: 12, color: '#cbd5e1' },
+  primaryBtn: {
+    marginTop: 10,
+    height: 52, // Taller button
+    borderRadius: 14, // More rounded button
+    backgroundColor: '#3498db', // A vibrant blue
+    shadowColor: '#3498db',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 6,
+  },
+  linkRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20, // More space above links
+  },
+  link: {
+    color: '#3498db', // Blue links
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  separator: {
+    marginHorizontal: 12,
+    color: '#bdc3c7', // Lighter separator
+    fontSize: 14,
+  },
 });
 
 export default SignInScreen;

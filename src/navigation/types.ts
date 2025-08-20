@@ -27,6 +27,7 @@ export type MyPageStackParamList = {
 };
 
 export type RootTabParamList = {
+  Home: undefined;
   Board: undefined;
   QA: undefined;
   Search: undefined;

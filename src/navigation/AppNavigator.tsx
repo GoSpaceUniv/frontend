@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Text } from 'react-native';
+import { getLinkingConfig } from './linkingConfig'; // linkingConfig 파일에서 설정을 가져옵니다.
 
 import { useAuth } from '../hooks/useAuth';
 import type { AuthStackParamList, BoardStackParamList, QAStackParamList, MyPageStackParamList, RootTabParamList } from './types';
@@ -31,6 +32,7 @@ import MyPostsScreen from '../screens/mypage/MyPostsScreen';
 import MyCommentsScreen from '../screens/mypage/MyCommentsScreen';
 import MyScrapsScreen from '../screens/mypage/MyScrapsScreen';
 import MentorAnswersScreen from '../screens/mypage/MentorAnswersScreen';
+import HomeScreen from '../screens/HomeScreen'; // Import HomeScreen
 
 const AuthStack = createStackNavigator<AuthStackParamList>();
 const BoardStack = createStackNavigator<BoardStackParamList>();
@@ -88,6 +90,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>(); // Define Tab navigato
 function AppTabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Home" component={HomeScreen} options={{ title: '홈' }} />
       <Tab.Screen name="Board" component={BoardNavigator} options={{ title: '게시판' }} />
       <Tab.Screen name="QA" component={QANavigator} options={{ title: 'Q&A' }} />
       <Tab.Screen name="Search" component={SearchScreen} options={{ title: '검색' }} />
@@ -100,9 +103,12 @@ function AppTabs() {
 export default function AppNavigator() {
   const { token, isLoading } = useAuth();
   if (isLoading) return <Text style={{ padding: 16 }}>로딩 중...</Text>;
+
+  const linking = getLinkingConfig(); // linking 설정을 가져옵니다.
+
   return (
-    <NavigationContainer>
-      {token ? <AppTabs /> : <AuthNavigator />} {/* token이 있으면 AppTabs, 없으면 AuthNavigator */}
+    <NavigationContainer linking={linking} fallback={<Text>로딩 중...</Text>}>
+      {token ? <AppTabs /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }
