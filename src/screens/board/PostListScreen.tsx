@@ -151,7 +151,12 @@ const PostListScreen: React.FC = () => {
       </View>
 
       {/* 카테고리 탭 */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryTabs}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoryTabs}
+        contentContainerStyle={styles.categoryTabsContent}
+      >
         {Object.entries(CATEGORY_NAMES).map(([key, name]) => {
           const isActive = category === key;
           const color = CATEGORY_COLORS[key as keyof typeof CATEGORY_COLORS];
@@ -159,11 +164,15 @@ const PostListScreen: React.FC = () => {
             <TouchableOpacity
               key={key}
               style={[
-                styles.categoryTab, 
-                isActive && { 
-                  backgroundColor: color?.primary,
-                  borderColor: color?.primary
-                }
+                styles.categoryTab,
+                isActive && [
+                  styles.categoryTabActive,
+                  {
+                    backgroundColor: color?.primary,
+                    borderColor: color?.primary,
+                    shadowColor: color?.primary,
+                  },
+                ]
               ]}
               onPress={() => navigate(`/board/list?category=${key}`)}
             >
@@ -249,19 +258,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF',
   },
+  categoryTabsContent: {
+    paddingHorizontal: 4,
+  },
   categoryTab: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginRight: 8,
-    borderRadius: 20,
-    backgroundColor: '#F8F9FA',
+    paddingVertical: 6,
+    marginRight: 12,
+    borderRadius: 22,
+    backgroundColor: '#F8FBFD',
     borderWidth: 1,
-    borderColor: '#E9ECEF',
+    borderColor: '#E6EEF5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  categoryTabActive: {
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 10,
+    elevation: 4,
   },
   categoryTabText: {
     fontSize: 14,
-    color: '#6C757D',
-    fontWeight: '500',
+    color: '#6B7280',
+    fontWeight: '600',
+    lineHeight: 16,
   },
   categoryTabTextActive: {
     color: '#FFFFFF',

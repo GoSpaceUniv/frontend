@@ -14,6 +14,7 @@ const SignUpScreen: React.FC = () => {
   const [graduationYear, setGraduationYear] = useState('');
   const [schoolName, setSchoolName] = useState('');
   const [uploadName, setUploadName] = useState<string>('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Region code mapping for education offices
@@ -102,22 +103,37 @@ const SignUpScreen: React.FC = () => {
 
   const onFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setUploadName(file.name);
+    if (file) {
+      setSelectedFile(file);
+      setUploadName(file.name);
+    }
   };
 
   const submit = async () => {
     try {
-      // 웹 환경이든 네이티브 환경이든 동일하게 JSON 형식으로 데이터를 전송합니다.
-      // 학생증 이미지 업로드는 현재 요청된 정보에 포함되지 않으므로 제외합니다.
+      const gy = parseInt(graduationYear, 10);
+      if (Number.isNaN(gy)) {
+        alert('졸업 연도를 올바르게 입력해주세요.');
+        return;
+      }
+
+      const form = new FormData();
+      form.append('email', email);
+      form.append('password', password);
+      form.append('nickname', nickname);
+      form.append('graduationYear', String(gy));
+      if (selectedFile) {
+        form.append('file', selectedFile);
+      }
+
       await apiFetch('/api/users/auth/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password, nickname, graduationYear: parseInt(graduationYear, 10), schoolName }),
+        body: form,
       });
-      // 회원가입 성공 시 로그인 페이지로 리다이렉트
+
       navigate('/signin');
     } catch (error) {
       console.error('회원가입 실패:', error);
-      // TODO: 사용자에게 오류 메시지를 표시하는 로직 추가 (예: alert)
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
   };
@@ -136,7 +152,7 @@ const SignUpScreen: React.FC = () => {
           <Input label="이메일" value={email} onChangeText={setEmail} placeholder="example@domain.com" autoCapitalize="none" keyboardType="email-address" containerStyle={styles.inputContainer} inputStyle={styles.inputField} />
           <Input label="비밀번호" value={password} onChangeText={setPassword} placeholder="비밀번호" secureTextEntry containerStyle={styles.inputContainer} inputStyle={styles.inputField} />
           <Input label="닉네임" value={nickname} onChangeText={setNickname} placeholder="최대 10자" maxLength={10} containerStyle={styles.inputContainer} inputStyle={styles.inputField} />
-          <Input label="졸업 연도" value={graduationYear} onChangeText={setGraduationYear} placeholder="예: 2025" keyboardType="numeric" containerStyle={styles.inputContainer} inputStyle={styles.inputField} />
+          <Input label="졸업 연도" value={graduationYear} onChangeText={(text)=> setGraduationYear(text.replace(/\D/g, '').slice(0,4))} placeholder="예: 2025" keyboardType="numeric" containerStyle={styles.inputContainer} inputStyle={styles.inputField} />
           {/* 역할은 기본값 USER로 서버에 전송됩니다 */}
           <View style={styles.schoolBlock}>
             <View style={{ zIndex: 2 }}> {/* 지역 선택 드롭다운이 학교 선택 드롭다운 위에 오도록 zIndex 추가 */}
