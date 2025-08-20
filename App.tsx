@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './src/context/AuthContext';
+import { useAuth } from './src/hooks/useAuth';
 import MobileViewport from './src/components/MobileViewport';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SignInScreen from './src/screens/auth/SignInScreen';
 import SignUpScreen from './src/screens/auth/SignUpScreen';
-import GraduationYearScreen from './src/screens/auth/GraduationYearScreen';
 import BoardHomeScreen from './src/screens/board/BoardHomeScreen';
 import PostListScreen from './src/screens/board/PostListScreen';
 import PostDetailScreen from './src/screens/board/PostDetailScreen';
@@ -29,35 +29,55 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <MobileViewport>
-          <Routes>
-            <Route path="/" element={<SignInScreen />} />
-            <Route path="/signin" element={<SignInScreen />} />
-            <Route path="/signup" element={<SignUpScreen />} />
-            <Route path="/graduation" element={<GraduationYearScreen navigation={undefined as any} route={{} as any} />} />
-
-            <Route path="/board" element={<BoardHomeScreen />} />
-            <Route path="/board/list" element={<PostListScreen route={{ params: { locationKey: 'region:seoul' } } as any} navigation={undefined as any} />} />
-            <Route path="/board/detail/:id" element={<PostDetailScreen route={{ params: { postId: 'p_1' } } as any} />} />
-            <Route path="/board/create" element={<CreatePostScreen />} />
-
-            <Route path="/qa" element={<QAScreen />} />
-            <Route path="/qa/detail/:id" element={<QuestionDetailScreen route={{ params: { questionId: 'q_1' } } as any} />} />
-            <Route path="/qa/ask" element={<AskQuestionScreen />} />
-            <Route path="/qa/mentors" element={<MentorDirectoryScreen />} />
-
-            <Route path="/search" element={<SearchScreen />} />
-            <Route path="/notifications" element={<NotificationsScreen />} />
-
-            <Route path="/my" element={<MyPageScreen navigation={undefined as any} />} />
-            <Route path="/my/posts" element={<MyPostsScreen />} />
-            <Route path="/my/comments" element={<MyCommentsScreen />} />
-            <Route path="/my/scraps" element={<MyScrapsScreen />} />
-            <Route path="/my/answers" element={<MentorAnswersScreen />} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <AppRoutes />
         </MobileViewport>
       </BrowserRouter>
     </AuthProvider>
+  );
+}
+
+function AppRoutes() {
+  const { token, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div style={{ padding: 16, textAlign: 'center' }}>로딩 중...</div>;
+  }
+
+  if (!token) {
+    return (
+      <Routes>
+        <Route path="/" element={<SignInScreen />} />
+        <Route path="/signin" element={<SignInScreen />} />
+        <Route path="/signup" element={<SignUpScreen />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<BoardHomeScreen />} />
+      <Route path="/home" element={<BoardHomeScreen />} />
+      <Route path="/board" element={<BoardHomeScreen />} />
+      <Route path="/board/list" element={<PostListScreen />} />
+      <Route path="/board/detail/:id" element={<PostDetailScreen />} />
+      <Route path="/board/create" element={<CreatePostScreen />} />
+
+      <Route path="/qa" element={<QAScreen />} />
+      <Route path="/qa/detail/:id" element={<QuestionDetailScreen route={{ params: { questionId: 'q_1' } } as any} />} />
+      <Route path="/qa/ask" element={<AskQuestionScreen />} />
+      <Route path="/qa/mentors" element={<MentorDirectoryScreen />} />
+
+      <Route path="/search" element={<SearchScreen />} />
+      <Route path="/notifications" element={<NotificationsScreen />} />
+
+      <Route path="/my" element={<MyPageScreen navigation={undefined as any} />} />
+      <Route path="/my/posts" element={<MyPostsScreen />} />
+      <Route path="/my/comments" element={<MyCommentsScreen />} />
+      <Route path="/my/scraps" element={<MyScrapsScreen />} />
+      <Route path="/my/answers" element={<MentorAnswersScreen />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

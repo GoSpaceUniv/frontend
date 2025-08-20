@@ -46,12 +46,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // 앱 시작 시 저장된 인증 정보 로드
     const loadAuthData = async () => {
       try {
+        // 개발 중에 로컬 스토리지 초기화 (필요시 주석 해제)
+        await StorageManager.removeItem('authToken');
+        await StorageManager.removeItem('authUser');
+        
         const storedToken = await StorageManager.getItem<string>('authToken');
         const storedUser = await StorageManager.getItem<UserProfile>('authUser');
+        
+        // 토큰과 사용자 정보가 모두 있는 경우에만 로그인 상태로 설정
         if (storedToken && storedUser) {
+          // TODO: 실제로는 토큰 유효성을 서버에서 검증해야 함
+          // 현재는 데모용으로 저장된 정보를 사용
           setState({ token: storedToken, user: storedUser, isLoading: false });
         } else {
-          setState(prev => ({ ...prev, isLoading: false }));
+          // 저장된 정보가 없거나 불완전한 경우 로그아웃 상태로 설정
+          await StorageManager.removeItem('authToken');
+          await StorageManager.removeItem('authUser');
+          setState({ token: null, user: null, isLoading: false });
         }
       } catch (error) {
         console.error('Failed to load auth data from storage', error);
@@ -61,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           await StorageManager.removeItem('authUser');
           console.warn('Corrupted auth data removed from storage.');
         }
-        setState(prev => ({ ...prev, isLoading: false }));
+        setState({ token: null, user: null, isLoading: false });
       }
     };
     loadAuthData();

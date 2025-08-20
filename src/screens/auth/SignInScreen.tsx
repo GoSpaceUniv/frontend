@@ -24,8 +24,7 @@ const SignInScreen: React.FC = () => {
       console.log('signIn 함수 호출 전');
       await signIn({ email, password });
       console.log('signIn 함수 호출 후');
-      // 로그인 성공 후 홈페이지로 이동
-      navigate('/board');
+      // 로그인 성공 시 AuthContext에서 자동으로 상태가 업데이트되어 페이지가 변경됩니다
     } catch (e) {
       console.error('로그인 실패:', e);
       Alert.alert('로그인 실패', '아이디 또는 비밀번호를 확인하세요');
