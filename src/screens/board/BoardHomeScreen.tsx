@@ -244,274 +244,170 @@ const BoardHomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F9FA',
-  },
-  header: {
-    backgroundColor: '#007BFF',
-    paddingTop: 20,
-    paddingBottom: 24,
-    paddingHorizontal: 20,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  headerContent: {
-    zIndex: 2,
-  },
-  headerTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#E3F2FD',
-  },
-  headerDecoration: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: '100%',
-    height: '100%',
-  },
-  decorationCircle1: {
-    position: 'absolute',
-    top: -50,
-    right: -50,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  decorationCircle2: {
-    position: 'absolute',
-    bottom: -30,
-    right: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  section: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#212529',
-    marginBottom: 4,
-  },
-  sectionSubtitle: {
-    fontSize: 14,
-    color: '#6C757D',
-  },
-  moreButton: {
-    backgroundColor: '#007BFF',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  moreButtonText: {
-    fontSize: 14,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  boardGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  boardCard: {
-    width: '48%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    alignItems: 'center',
-  },
-  boardIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  boardIcon: {
-    fontSize: 24,
-  },
-  boardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  boardDescription: {
-    fontSize: 12,
-    color: '#6C757D',
-    lineHeight: 16,
-    textAlign: 'center',
-  },
-  popularPosts: {
-    gap: 12,
-  },
-  postCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  hotPostCard: {
-    backgroundColor: '#FFF8F0',
-    borderWidth: 1,
-    borderColor: '#FFE4B5',
-  },
-  postHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  postRank: {
-    backgroundColor: '#F8F9FA',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  rankText: {
-    fontSize: 12,
-    color: '#6C757D',
-    fontWeight: '600',
-  },
-  hotBadge: {
-    backgroundColor: '#FF6B6B',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  hotBadgeText: {
-    fontSize: 12,
-    color: '#FFFFFF',
-  },
-  postTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#212529',
-    marginBottom: 12,
-    lineHeight: 22,
-  },
-  postFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  postAuthorSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  authorAvatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#007BFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
-  authorInitial: {
-    fontSize: 12,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  postAuthor: {
-    fontSize: 12,
-    color: '#6C757D',
-    fontWeight: '500',
-  },
-  postStats: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  postStat: {
-    fontSize: 12,
-    color: '#6C757D',
-  },
-  quickMenu: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  quickMenuItem: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 16,
-    alignItems: 'center',
-    marginHorizontal: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  quickMenuIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  quickMenuIconText: {
-    fontSize: 20,
-  },
-  quickMenuText: {
-    fontSize: 12,
-    color: '#212529',
-    fontWeight: '500',
-  },
-  fab: {
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
-    backgroundColor: '#007BFF',
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  fabText: {
-    fontSize: 24,
-    color: '#FFFFFF',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#F8F9FA',
+    },
+
+    /* 헤더 - 그대로 */
+    header: {
+        backgroundColor: '#007BFF',
+        paddingTop: 20,
+        paddingBottom: 24,
+        paddingHorizontal: 20,
+        position: 'relative',
+        overflow: 'hidden',
+    },
+    headerContent: { zIndex: 2 },
+    headerTitle: { fontSize: 32, fontWeight: 'bold', color: '#FFFFFF', marginBottom: 4 },
+    headerSubtitle: { fontSize: 16, color: '#E3F2FD' },
+    headerDecoration: { position: 'absolute', top: 0, right: 0, width: '100%', height: '100%' },
+    decorationCircle1: { position: 'absolute', top: -50, right: -50, width: 100, height: 100, borderRadius: 50, backgroundColor: 'rgba(255, 255, 255, 0.1)' },
+    decorationCircle2: { position: 'absolute', bottom: -30, right: 20, width: 60, height: 60, borderRadius: 30, backgroundColor: 'rgba(255, 255, 255, 0.1)' },
+
+    /* 섹션 - 그대로 */
+    section: { marginTop: 20, paddingHorizontal: 20 },
+    sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 },
+    sectionTitle: { fontSize: 22, fontWeight: 'bold', color: '#212529', marginBottom: 4 },
+    sectionSubtitle: { fontSize: 14, color: '#6C757D' },
+    moreButton: { backgroundColor: '#007BFF', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20 },
+    moreButtonText: { fontSize: 14, color: '#FFFFFF', fontWeight: '600' },
+
+    /* 게시판 카드: 더 라운드 + 아이콘 글로시 느낌(테두리) */
+    boardGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+    boardCard: {
+        width: '48%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 22,            // ← 16 → 22
+        padding: 16,
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    boardIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+        borderWidth: 1,                            // 글로시 테두리
+        borderColor: 'rgba(255,255,255,0.5)',
+    },
+    boardIcon: { fontSize: 24 },
+    boardTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 4, textAlign: 'center' },
+    boardDescription: { fontSize: 12, color: '#6C757D', lineHeight: 16, textAlign: 'center' },
+
+    /* 인기 게시글: 랭킹 원형칩 + HOT 라운드칩 + 하단 분리 영역 */
+    popularPosts: { gap: 12 },
+    postCard: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    hotPostCard: { backgroundColor: '#FFF8F0', borderWidth: 1, borderColor: '#FFE4B5' },
+    postHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+
+    /* 기존 사각 배지 → 원형 칩 */
+    postRank: {
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: '#1E5EFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 0,       // 기존 패딩 무의미화
+        paddingVertical: 0,
+    },
+    rankText: { fontSize: 12, color: '#FFFFFF', fontWeight: '700' },
+
+    /* HOT 배지: 텍스트 대신 이모지 칩 느낌 */
+    hotBadge: {
+        backgroundColor: '#FF6B6B',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        borderRadius: 999,
+    },
+    hotBadgeText: { fontSize: 12, color: '#FFFFFF' },
+
+    postTitle: { fontSize: 16, fontWeight: '600', color: '#212529', marginBottom: 12, lineHeight: 22 },
+
+    /* 하단 분리 영역처럼 보이게 */
+    postFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#F3F4F6',
+        borderRadius: 12,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        marginTop: 8,
+    },
+    postAuthorSection: { flexDirection: 'row', alignItems: 'center' },
+    authorAvatar: { width: 26, height: 26, borderRadius: 13, backgroundColor: '#007BFF', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+    authorInitial: { fontSize: 12, color: '#FFFFFF', fontWeight: 'bold' },
+    postAuthor: { fontSize: 12, color: '#6C757D', fontWeight: '500' },
+    postStats: { flexDirection: 'row', gap: 8 },
+    postStat: { fontSize: 12, color: '#6C757D' },
+
+    /* 빠른 메뉴: 원형 버튼 + 파스텔 (JSX 변경 없이) */
+    quickMenu: { flexDirection: 'row', justifyContent: 'space-between' },
+    quickMenuItem: {
+        /* flex:1 제거 → 막대 현상 방지 */
+        width: '24%',                 // 4칸 균등
+        backgroundColor: 'transparent',
+        borderRadius: 0,
+        padding: 8,
+        alignItems: 'center',
+        marginHorizontal: 4,
+        shadowOpacity: 0,
+        elevation: 0,
+    },
+    quickMenuIcon: {
+        width: 64,                    // 원형 고정
+        height: 64,
+        borderRadius: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 6,
+    },
+    quickMenuIconText: { fontSize: 24 },  // 이모지 크기 키움
+    quickMenuText: { fontSize: 12, color: '#1B1E28', fontWeight: '700' },
+
+    /* FAB: 원형 버튼과 안 겹치도록 위로 */
+    fab: {
+        position: 'absolute',
+        right: 20,
+        bottom: 84,                   // ← 20 → 84로 올림
+        backgroundColor: '#007BFF',
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.3,
+        shadowRadius: 12,
+        elevation: 8,
+    },
+    fabText: { fontSize: 24, color: '#FFFFFF' },
 });
+
 
 export default BoardHomeScreen;
